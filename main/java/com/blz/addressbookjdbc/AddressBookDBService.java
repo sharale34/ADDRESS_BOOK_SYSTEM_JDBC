@@ -139,7 +139,7 @@ public class AddressBookDBService {
 	}
 
 	public Contact addContact(String firstName, String lastName, String address, String city, String state, int zip,
-			int phone, String email, String addressBookName, LocalDate startDate) {
+			int phone, String email, String addressBookName, String addressBookType, LocalDate startDate) {
 		Connection connection = null;
 		try {
 			connection = this.getConnection();
@@ -151,8 +151,8 @@ public class AddressBookDBService {
 		try {
 			Statement statement = connection.createStatement();
 			String sql = String.format(
-					"INSERT INTO contacts(firstName,lastName,Address_Book_Name,Address,City,State,Zip,Phone_Number,Email,startDate) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
-					firstName, lastName, addressBookName, address, city, state, zip, phone, email, startDate);
+					"INSERT INTO contacts(firstName,lastName,startDate, Address_Book_Name,Address_Book_Type,Address,City,State,Zip,Phone_Number,Email) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+					firstName, lastName,startDate, addressBookName, addressBookType, address, city, state, zip, phone, email);
 			statement.executeUpdate(sql);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -176,7 +176,8 @@ public class AddressBookDBService {
 				}
 			}
 		}
-		return new Contact(firstName, lastName, address, city, state, zip, phone, email, addressBookName, startDate);
+		return new Contact(firstName, lastName, address, city, state, zip, phone, email, addressBookName,
+				addressBookType, startDate);
 	}
 
 	private void prepareStatementForContactData() {

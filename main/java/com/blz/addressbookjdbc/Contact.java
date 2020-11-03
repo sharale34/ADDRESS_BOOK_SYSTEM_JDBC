@@ -30,16 +30,8 @@ public class Contact {
 	}
 
 	public Contact(String firstName, String lastName, String address, String city, String state, int zip,
-			int phoneNumber, String email, String addressBookName, LocalDate startDate) {
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.address = address;
-		this.city = city;
-		this.state = state;
-		this.zip = zip;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.addressBookName = addressBookName;
+			int phoneNumber, String email, String addressBookName, String addressBookType, LocalDate startDate) {
+		this(firstName, lastName, address, city, state, zip, phoneNumber, email, addressBookName, addressBookType);
 		this.startDate = startDate;
 	}
 
