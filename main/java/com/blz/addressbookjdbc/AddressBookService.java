@@ -2,9 +2,11 @@ package com.blz.addressbookjdbc;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 public class AddressBookService {
 	private List<Contact> contactList;
+	private Map<String, Integer> contactByCityOrState;
 	private AddressBookDBService addressBookDBService;
 
 	public AddressBookService(List<Contact> contactList) {
@@ -44,4 +46,8 @@ public class AddressBookService {
 		return contactList;
 	}
 
+	public Map<String, Integer> readContactByCityOrState() {
+		this.contactByCityOrState = addressBookDBService.getContactsByCityOrState();
+		return contactByCityOrState;
+	}
 }

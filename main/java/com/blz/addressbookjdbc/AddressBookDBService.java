@@ -6,9 +6,12 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 
 public class AddressBookDBService {
@@ -28,8 +31,8 @@ public class AddressBookDBService {
 	public List<Contact> readData() {
 		String sql = "SELECT c.firstName, c.lastName,c.Address_Book_Name,c.Address,c.City,"
 				+ "c.State,c.Zip,c.Phone_Number,c.Email,a.Address_Book_Type "
-				+ "from contacts c inner join Address_Book_Dictionary a "
-				+ "on c.Address_Book_Name=a.Address_Book_Name; ";
+				+ "FROM contacts c INNER JOIN Address_Book_Dictionary a "
+				+ "ON c.Address_Book_Name=a.Address_Book_Name; ";
 		return this.getContactDetailsUsingSqlQuery(sql);
 	}
 
@@ -108,6 +111,31 @@ public class AddressBookDBService {
 						+ "ON c.Address_Book_Name=a.Address_Book_Name WHERE startDate BETWEEN '%s' AND '%s'; ",
 				Date.valueOf(startDate), Date.valueOf(endDate));
 		return this.getContactDetailsUsingSqlQuery(sql);
+	}
+
+	public Map<String, Integer> getContactsByCityOrState() {
+		Map<String, Integer> contactByCityOrStateMap = new HashMap<>();
+		ResultSet resultSet;
+		String sqlCity = "SELECT city, COUNT(firstName) as count FROM contacts GROUP BY City; ";
+		String sqlState = "SELECT state, COUNT(firstName) as count FROM contacts GROUP BY State; ";
+		try (Connection connection = addressBookDBService.getConnection()) {
+			Statement statement = connection.createStatement();
+			resultSet = statement.executeQuery(sqlCity);
+			while (resultSet.next()) {
+				String city = resultSet.getString("city");
+				Integer count = resultSet.getInt("count");
+				contactByCityOrStateMap.put(city, count);
+			}
+			resultSet = statement.executeQuery(sqlState);
+			while (resultSet.next()) {
+				String state = resultSet.getString("state");
+				Integer count = resultSet.getInt("count");
+				contactByCityOrStateMap.put(state, count);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return contactByCityOrStateMap;
 	}
 
 	private void prepareStatementForContactData() {
