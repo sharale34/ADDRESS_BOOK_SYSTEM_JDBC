@@ -1,10 +1,12 @@
 package com.blz.addressbookjdbc;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
@@ -96,6 +98,16 @@ public class AddressBookDBService {
 			e.printStackTrace();
 		}
 		return contactList;
+	}
+
+	public List<Contact> getContactForGivenDateRange(LocalDate startDate, LocalDate endDate) {
+		String sql = String.format(
+				"SELECT c.firstName, c.lastName,c.Address_Book_Name,c.Address,c.City,"
+						+ "c.State,c.Zip,c.Phone_Number,c.Email,a.Address_Book_Type "
+						+ "FROM contacts c INNER JOIN Address_Book_Dictionary a "
+						+ "ON c.Address_Book_Name=a.Address_Book_Name WHERE startDate BETWEEN '%s' AND '%s'; ",
+				Date.valueOf(startDate), Date.valueOf(endDate));
+		return this.getContactDetailsUsingSqlQuery(sql);
 	}
 
 	private void prepareStatementForContactData() {
