@@ -12,4 +12,13 @@ public class AddressBookSystemTest {
 		List<Contact> contactList = addressBookService.readContactData();
 		Assert.assertEquals(3, contactList.size());
 	}
+
+	@Test
+	public void contactsWhenUpdatedUsingPreparedStatement_ShouldSyncWithDB() {
+		AddressBookService addressBookService = new AddressBookService();
+		List<Contact> contactList = addressBookService.readContactData();
+		addressBookService.updateContactDetails("Rohit", "Karol Bagh");
+		boolean result = addressBookService.checkContactInSyncWithDB("Rohit");
+		Assert.assertTrue(result);
+	}
 }
