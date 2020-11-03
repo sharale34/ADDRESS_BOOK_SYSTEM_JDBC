@@ -138,6 +138,47 @@ public class AddressBookDBService {
 		return contactByCityOrStateMap;
 	}
 
+	public Contact addContact(String firstName, String lastName, String address, String city, String state, int zip,
+			int phone, String email, String addressBookName, LocalDate startDate) {
+		Connection connection = null;
+		try {
+			connection = this.getConnection();
+			connection.setAutoCommit(false);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		try {
+			Statement statement = connection.createStatement();
+			String sql = String.format(
+					"INSERT INTO contacts(firstName,lastName,Address_Book_Name,Address,City,State,Zip,Phone_Number,Email,startDate) values ('%s','%s','%s','%s','%s','%s','%s','%s','%s','%s')",
+					firstName, lastName, addressBookName, address, city, state, zip, phone, email, startDate);
+			statement.executeUpdate(sql);
+		} catch (SQLException e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+				e.printStackTrace();
+			}
+		}
+
+		try {
+			connection.commit();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return new Contact(firstName, lastName, address, city, state, zip, phone, email, addressBookName, startDate);
+	}
+
 	private void prepareStatementForContactData() {
 		try {
 			Connection connection = addressBookDBService.getConnection();
