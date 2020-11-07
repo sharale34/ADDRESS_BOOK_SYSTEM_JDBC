@@ -1,6 +1,7 @@
 package com.blz.addressbookjdbc;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,12 @@ public class AddressBookService {
 	private AddressBookDBService addressBookDBService;
 
 	public enum IOService {
-		DB_IO
+		DB_IO, REST_IO
 	}
 
 	public AddressBookService(List<Contact> contactList) {
 		this();
-		this.contactList = contactList;
+		this.contactList = new ArrayList<>(contactList);
 	}
 
 	public AddressBookService() {
@@ -91,6 +92,7 @@ public class AddressBookService {
 		contactDataList.forEach(contactData -> {
 			Runnable task = () -> {
 				employeeAdditionStatus.put(contactData.hashCode(), false);
+				//Returns a reference to the currently executing thread object
 				log.info("Employee being added : " + Thread.currentThread().getName());
 				this.addContactToDB(contactData.firstName, contactData.lastName, contactData.address, contactData.city,
 						contactData.state, contactData.zip, contactData.phoneNumber, contactData.email,
@@ -108,5 +110,13 @@ public class AddressBookService {
 			}
 		}
 		log.info("" + this.contactList);
+	}
+
+	public void addContactToJSONServer(Contact contactData, IOService ioService) {
+		if (ioService.equals(IOService.REST_IO))
+			this.addContactToDB(contactData.firstName, contactData.lastName, contactData.address, contactData.city,
+					contactData.state, contactData.zip, contactData.phoneNumber, contactData.email,
+					contactData.addressBookName, contactData.addressBookType, contactData.startDate);
+		contactList.add(contactData);		
 	}
 }

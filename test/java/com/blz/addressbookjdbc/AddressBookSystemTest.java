@@ -14,7 +14,7 @@ import org.junit.Test;
 import com.blz.addressbookjdbc.AddressBookService.IOService;
 
 public class AddressBookSystemTest {
-	private static Logger log = Logger.getLogger(AddressBookService.class.getName());
+	private static Logger log = Logger.getLogger(AddressBookSystemTest.class.getName());
 
 	@Test
 	public void contactsWhenRetrievedFromDB_ShouldMatchCount() {
@@ -73,6 +73,7 @@ public class AddressBookSystemTest {
 						"devilliers@gmail.com", "Corporate", "Family" , LocalDate.now()) };
 		AddressBookService addressBookService = new AddressBookService();
 		addressBookService.readData(IOService.DB_IO);
+		//Obtains the current instant from the system clock. 
 		Instant start = Instant.now();
 		addressBookService.addContact(Arrays.asList(arrayOfEmployee));
 		Instant end = Instant.now();

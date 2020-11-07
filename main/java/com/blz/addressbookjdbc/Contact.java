@@ -1,6 +1,7 @@
 package com.blz.addressbookjdbc;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 public class Contact {
 	public String firstName;
@@ -36,12 +37,24 @@ public class Contact {
 	}
 
 	@Override
-	public boolean equals(Object o) {
-		if (this == o)
+	public int hashCode() {
+		return Objects.hash(address, addressBookName, addressBookType, city, email, firstName, lastName, phoneNumber,
+				startDate, state, zip);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
 			return true;
-		if (o == null || getClass() != o.getClass())
+		if (obj == null)
 			return false;
-		Contact that = (Contact) o;
-		return firstName.equals(that.firstName) && address.equals(that.address);
+		if (getClass() != obj.getClass())
+			return false;
+		Contact other = (Contact) obj;
+		return Objects.equals(address, other.address) && Objects.equals(addressBookName, other.addressBookName)
+				&& Objects.equals(addressBookType, other.addressBookType) && Objects.equals(city, other.city)
+				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName)
+				&& Objects.equals(lastName, other.lastName) && phoneNumber == other.phoneNumber
+				&& Objects.equals(startDate, other.startDate) && Objects.equals(state, other.state) && zip == other.zip;
 	}
 }
