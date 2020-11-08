@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.Objects;
 
 public class Contact {
+	public int id;
 	public String firstName;
 	public String lastName;
 	public String address;
