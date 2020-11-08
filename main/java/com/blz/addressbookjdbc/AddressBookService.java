@@ -7,9 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-import com.bridgelabz.payrollrestapi.EmployeePayrollData;
-import com.bridgelabz.payrollrestapi.EmployeePayrollService.IOService;
-
 public class AddressBookService {
 	private static Logger log = Logger.getLogger(AddressBookService.class.getName());
 	private List<Contact> contactList;

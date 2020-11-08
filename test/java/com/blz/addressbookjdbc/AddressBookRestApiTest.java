@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.blz.addressbookjdbc.AddressBookService.IOService;
-import com.bridgelabz.payrollrestapi.EmployeePayrollData;
-import com.bridgelabz.payrollrestapi.EmployeePayrollService;
 import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
