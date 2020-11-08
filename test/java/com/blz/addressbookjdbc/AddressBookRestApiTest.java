@@ -93,8 +93,24 @@ public class AddressBookRestApiTest {
 		RequestSpecification request = RestAssured.given(); // Allows to specify how the request will look like
 		request.header("Content-Type", "application/json");
 		request.body(empJson);
-		Response response = request.put("/employees/" + contactData.id);
+		Response response = request.put("/addressBook/" + contactData.id);
 		int statusCode = response.getStatusCode();
-		Assert.assertEquals(404, statusCode);
+		Assert.assertEquals(200, statusCode);
+	}
+	
+	@Test
+	public void givenContact_WhenDeleted_ShouldMatchStatusCodeAndCount() {
+		AddressBookService addressBookService;
+		Contact[] arrayOfContacts = getContactList();
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
+		Contact contactData = addressBookService.getContactData("Chris");
+		RequestSpecification request = RestAssured.given();
+		request.header("Content-Type", "application/json");
+		Response response = request.delete("/addressBook/" + contactData.id);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(200, statusCode);
+		addressBookService.deleteContactDetails(contactData.firstName, IOService.REST_IO);
+		long entries = addressBookService.countEntries(IOService.REST_IO);
+		Assert.assertEquals(3, entries);
 	}
 }

@@ -131,4 +131,12 @@ public class AddressBookService {
 		if (contactData != null)
 			contactData.address = address;
 	}
+	
+	public void deleteContactDetails(String name, IOService ioService) {
+		Contact contactData = this.getContactData(name);
+		System.out.println(this.getContactData(name));
+		if (contactData != null)
+			contactList.remove(contactData);
+	}
+
 }
