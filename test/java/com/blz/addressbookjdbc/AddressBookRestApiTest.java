@@ -9,8 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.blz.addressbookjdbc.AddressBookService.IOService;
-import com.bridgelabz.payrollrestapi.EmployeePayrollData;
-import com.bridgelabz.payrollrestapi.EmployeePayrollService;
 import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
@@ -62,7 +60,7 @@ public class AddressBookRestApiTest {
 	@Test
 	public void givenListOfNewContacts_WhenAdded__ShouldMatchCount() {
 		AddressBookService addressBookService;
-		Contact[] arrayOfContacts = getContactList(); // population the employeePayroll List
+		Contact[] arrayOfContacts = getContactList(); // populate the contact List
 		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));
 		Contact[] arrayOfContactsList = {
 				new Contact("Kuldeep", "Yadav", "Bandra", "Kolkata", "West Bengal", 700012, 99084874,
@@ -76,7 +74,7 @@ public class AddressBookRestApiTest {
 			Assert.assertEquals(201, statusCode);
 			// converting the added ones into objects from the json file
 			contactData = new Gson().fromJson(response.asString(), Contact.class);
-			// adding objects into the employee payroll
+			// adding objects into the addressBook
 			addressBookService.addContactToAddressBook(contactData, IOService.REST_IO);
 		}
 		long entries = addressBookService.countEntries(IOService.REST_IO);
