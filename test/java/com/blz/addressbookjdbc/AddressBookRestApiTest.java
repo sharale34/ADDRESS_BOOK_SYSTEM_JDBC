@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.blz.addressbookjdbc.AddressBookService.IOService;
+import com.bridgelabz.payrollrestapi.EmployeePayrollData;
+import com.bridgelabz.payrollrestapi.EmployeePayrollService;
 import com.google.gson.Gson;
 
 import io.restassured.RestAssured;
@@ -79,5 +81,22 @@ public class AddressBookRestApiTest {
 		}
 		long entries = addressBookService.countEntries(IOService.REST_IO);
 		Assert.assertEquals(4, entries);
+	}
+	
+	@Test
+	public void givenNewAddressForContact_WhenUpdated_ShouldMatch() {
+		AddressBookService addressBookService;
+		Contact[] arrayOfContacts = getContactList(); // populate the contact List
+		addressBookService = new AddressBookService(Arrays.asList(arrayOfContacts));		
+		addressBookService.updateContactDetails("Sourabh", "Pothangal", IOService.REST_IO);
+		Contact contactData = addressBookService.getContactData("Sourabh");
+		// adding newly inserted contact to the Json server
+		String empJson = new Gson().toJson(contactData);
+		RequestSpecification request = RestAssured.given(); // Allows to specify how the request will look like
+		request.header("Content-Type", "application/json");
+		request.body(empJson);
+		Response response = request.put("/employees/" + contactData.id);
+		int statusCode = response.getStatusCode();
+		Assert.assertEquals(404, statusCode);
 	}
 }

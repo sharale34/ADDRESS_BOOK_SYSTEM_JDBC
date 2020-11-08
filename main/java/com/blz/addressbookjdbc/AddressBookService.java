@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
+import com.bridgelabz.payrollrestapi.EmployeePayrollData;
+import com.bridgelabz.payrollrestapi.EmployeePayrollService.IOService;
+
 public class AddressBookService {
 	private static Logger log = Logger.getLogger(AddressBookService.class.getName());
 	private List<Contact> contactList;
@@ -50,7 +53,7 @@ public class AddressBookService {
 			personInfo.address = address;
 	}
 
-	private Contact getContactData(String name) {
+	public Contact getContactData(String name) {
 		return this.contactList.stream().filter(contact -> contact.firstName.equals(name)).findFirst().orElse(null);
 	}
 
@@ -123,5 +126,12 @@ public class AddressBookService {
 	public void addContactToAddressBook(Contact contactData, IOService ioService) {
 		if (ioService.equals(IOService.REST_IO))
 			contactList.add(contactData);
+	}
+	
+	public void updateContactDetails(String name, String address, IOService ioService) {
+		Contact contactData = this.getContactData(name);
+		System.out.println(this.getContactData(name));
+		if (contactData != null)
+			contactData.address = address;
 	}
 }
